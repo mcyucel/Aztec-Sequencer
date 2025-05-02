@@ -7,28 +7,35 @@ HETZNER 10€ Hediyeli Link: https://hetzner.cloud/?ref=pRFkXFvi9sON
 
 # Sistemi Güncelleyelim ve Paketleri Yükleyelim
 
-```sudo apt-get update && sudo apt-get upgrade -y```
-
-```sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev  -y```
+```
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev  -y
+```
 
 # Docker'ı Yükleyelim
 
-```for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done```
+```
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
 
-```sudo apt-get update```
-```sudo apt-get install ca-certificates curl gnupg```
-```sudo install -m 0755 -d /etc/apt/keyrings```
-```curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg```
-```sudo chmod a+r /etc/apt/keyrings/docker.gpg```
+```
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
 
-```echo \```
- ``` "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \```
- ``` "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \```
-```  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null```
+```
+echo \
+ "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+ "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
 
-```sudo apt update -y && sudo apt upgrade -y```
-
-```sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
 
 # Docker'ı Test Edelim
 
@@ -36,22 +43,30 @@ HETZNER 10€ Hediyeli Link: https://hetzner.cloud/?ref=pRFkXFvi9sON
 
 Çıktı verirse kurulum başarılı, devam.
 
-```sudo systemctl enable docker```
-```sudo systemctl restart docker```
+```
+sudo systemctl enable docker
+sudo systemctl restart docker
+```
 
 # Aztec'i Kuralım
 
-```bash -i <(curl -s https://install.aztec.network)```
+```
+bash -i <(curl -s https://install.aztec.network)
+```
 
 Şimdi Terminali kapatıp tekrar açmamız gerekiyor.
 
 Terminali açtıktan sonra aşağırdaki kodu girip kurulumun başarılı olduğunu kontrol ediyoruz.
 
-```aztec```
+```
+aztec
+```
 
 Hata vermediyse devam.
 
-```aztec-up alpha-testnet```
+```
+aztec-up alpha-testnet
+```
 
 # Şimdi Alchemy'den RPC URL almamız gerekiyor. Bunun için resimlerdeki adımları izliyoruz.
 
@@ -66,11 +81,13 @@ EVM Cüzdan Private Key ve EVM Cüzdan Adresi de hazır olsun
 
 # Portları Açalım
 
-```ufw allow 22```
-```ufw allow ssh```
-```ufw enable```
-```ufw allow 40400```
-```ufw allow 8080```
+```
+ufw allow 22
+ufw allow ssh
+ufw enable
+ufw allow 40400
+ufw allow 8080
+```
 
 # Screen Açıyoruz
 
@@ -78,13 +95,15 @@ EVM Cüzdan Private Key ve EVM Cüzdan Adresi de hazır olsun
 
 Şimdi aşağıdaki kod bloğunu kendimize göre düzenleyip yapıştıracağız.
 
-```aztec start --node --archiver --sequencer \```
- ``` --network alpha-testnet \```
- ``` --l1-rpc-urls ALCHEMY_URL  \```
- ``` --l1-consensus-host-urls BEACON_URL \```
- ``` --sequencer.validatorPrivateKey PRIV_KEY \```
- ``` --sequencer.coinbase CUZDAN_ADRESI \```
- ``` --p2p.p2pIp SUNUCU_IP```
+```
+aztec start --node --archiver --sequencer \
+  --network alpha-testnet \
+  --l1-rpc-urls ALCHEMY_URL  \
+  --l1-consensus-host-urls BEACON_URL \
+  --sequencer.validatorPrivateKey PRIV_KEY \
+  --sequencer.coinbase CUZDAN_ADRESI \
+  --p2p.p2pIp SUNUCU_IP
+```
 
 ALCHEMY_URL: Alchemy'den aldığımız endpoint URL'si
 BEACON_URL: https://rpc.drpc.org/eth/sepolia/beacon
@@ -111,20 +130,25 @@ Nodeumuz senkronize oldu.
 Address: Cüzdan adresi
 block-number: Aşağıdaki kodu yazınca çıkan 5 haneli numara
 
-```curl -s -X POST -H 'Content-Type: application/json' \```
-```-d '{"jsonrpc":"2.0","method":"node_getL2Tips","params":[],"id":67}' \```
-```http://localhost:8080 | jq -r ".result.proven.number"```
+```
+curl -s -X POST -H 'Content-Type: application/json' \
+-d '{"jsonrpc":"2.0","method":"node_getL2Tips","params":[],"id":67}' \
+http://localhost:8080 | jq -r ".result.proven.number"
+```
 
 proof: Aşağıdaki kodda 2 yerde BLOCK_NUMBER yerine 5 haneli numarayı yazınca çıkan hash
 
-```curl -s -X POST -H 'Content-Type: application/json' \```
-```-d '{"jsonrpc":"2.0","method":"node_getArchiveSiblingPath","params":["BLOCK_NUMBER","BLOCK_NUMBER"],"id":67}' \```
-```http://localhost:8080 | jq -r ".result"```
+```
+curl -s -X POST -H 'Content-Type: application/json' \
+-d '{"jsonrpc":"2.0","method":"node_getArchiveSiblingPath","params":["BLOCK_NUMBER","BLOCK_NUMBER"],"id":67}' \
+http://localhost:8080 | jq -r ".result"
+```
 
 Bu şekilde Apprentice Dc'de rolünü alırsınız.
 
 # Validator Kaydı
 
+```
 aztec add-l1-validator \
   --l1-rpc-urls RPC_URL \
   --private-key PRIV_KEY \
@@ -134,5 +158,6 @@ aztec add-l1-validator \
   --l1-chain-id 11155111
 
 RPC_URL, PRIV_KEY ve CUZDAN_ADRESI önceki gibi düzenleyelim. Diğer yerler aynı kalıyor.
+```
 
 # BOL KAZANÇLAR
