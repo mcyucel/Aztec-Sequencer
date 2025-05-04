@@ -93,7 +93,9 @@ ufw allow 8080
 
 # Screen Açıyoruz
 
-```screen -S aztec```
+```
+screen -S aztec
+```
 
 Şimdi aşağıdaki kod bloğunu kendimize göre düzenleyip yapıştıracağız.
 
