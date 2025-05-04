@@ -39,7 +39,9 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 # Docker'ı Test Edelim
 
-```docker --version```
+```
+docker --version
+```
 
 Çıktı verirse kurulum başarılı, devam.
 
